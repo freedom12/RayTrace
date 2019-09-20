@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\dependents">
+      <UniqueIdentifier>{29c39134-2564-4499-8a37-086c12dc9979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dependents\gl3w">
+      <UniqueIdentifier>{784c9f3c-81ce-4ea0-a379-72f4afea5fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dependents\imgui">
+      <UniqueIdentifier>{2ce1c8b0-2cca-40ce-b5a6-b88dbd1a4bca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{b62b4a82-88ed-4ec3-bd9f-a8d431f7c143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{17e51ec7-e123-4337-9472-e09de4460208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dependents\glm">
+      <UniqueIdentifier>{393ec436-0c93-412d-96c2-90eba7318fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shape">
+      <UniqueIdentifier>{a3f6d28a-37ec-4583-b323-10d738c25b35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\material">
+      <UniqueIdentifier>{151aa48a-7a16-47a0-8756-2b787a75dbe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\renderer">
+      <UniqueIdentifier>{b0f736b8-e966-4e31-8498-91a729f0cc5c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\dependents\gl3w\src\gl3w.c">
+      <Filter>src\dependents\gl3w</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependents\imgui\imgui.cpp">
+      <Filter>src\dependents\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependents\imgui\imgui_demo.cpp">
+      <Filter>src\dependents\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependents\imgui\imgui_draw.cpp">
+      <Filter>src\dependents\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependents\imgui\imgui_impl_glfw.cpp">
+      <Filter>src\dependents\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependents\imgui\imgui_impl_opengl3.cpp">
+      <Filter>src\dependents\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependents\imgui\imgui_widgets.cpp">
+      <Filter>src\dependents\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="core\Program.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\RenderQuad.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\Shader.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\Texture.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\Ray.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="shape\Sphere.cpp">
+      <Filter>src\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="material\Material.cpp">
+      <Filter>src\material</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\TestRenderer.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="core\Camera.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\GLSLTestRenderer.cpp">
+      <Filter>src\renderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\dependents\imgui\imconfig.h">
+      <Filter>src\dependents\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\imgui\imgui.h">
+      <Filter>src\dependents\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\imgui\imgui_impl_glfw.h">
+      <Filter>src\dependents\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\imgui\imgui_impl_opengl3.h">
+      <Filter>src\dependents\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\imgui\imgui_internal.h">
+      <Filter>src\dependents\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\imgui\imstb_rectpack.h">
+      <Filter>src\dependents\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\imgui\imstb_textedit.h">
+      <Filter>src\dependents\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\imgui\imstb_truetype.h">
+      <Filter>src\dependents\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Program.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\RenderQuad.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Shader.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Texture.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Ray.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\common.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\exponential.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\ext.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\fwd.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\geometric.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\glm.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\integer.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat2x2.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat2x3.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat2x4.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat3x2.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat3x3.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat3x4.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat4x2.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat4x3.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\mat4x4.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\matrix.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\packing.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\trigonometric.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\vec2.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\vec3.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\vec4.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependents\glm\glm\vector_relational.hpp">
+      <Filter>src\dependents\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="shape\Shape.h">
+      <Filter>src\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="shape\Sphere.h">
+      <Filter>src\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="material\Material.h">
+      <Filter>src\material</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\Renderer.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\TestRenderer.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Random.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Camera.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\GLSLTestRenderer.h">
+      <Filter>src\renderer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\AccumFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\OutputFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\PathTraceFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\TestFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\GLSLTestFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\QuadVert.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\PBRPathTraceFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\LearnThis.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\PostFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\Copy.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\BTDFFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\shaders\Copy2.glsl">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\shaders\LearnThis2.txt">
+      <Filter>shaders</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{26D8FD06-A0FE-4CAB-967F-784F67A56CFC}</ProjectGuid>
+    <RootNamespace>RayTrace</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>E:\RayTrace\dependents\gl3w\include;E:\RayTrace\dependents\glfw\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\RayTrace\dependents\glfw\lib-vc2019;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)..\dependents\glfw\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\dependents\glfw\lib-vc2019;$(LibraryPath)</LibraryPath>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets>Run</CustomBuildBeforeTargets>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dependents\gl3w\include;$(ProjectDir)..\dependents\glm;$(ProjectDir)..\dependents\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <CustomBuildStep />
+    <CustomBuildStep>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+xcopy "$(SolutionDir)shaders" "$(OutDir)shaders" /D /E /I /F /Y</Command>
+    </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+xcopy "$(SolutionDir)shaders" "$(OutDir)shaders" /D /E /I /F /Y</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\dependents\gl3w\src\gl3w.c" />
+    <ClCompile Include="..\dependents\imgui\imgui.cpp" />
+    <ClCompile Include="..\dependents\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\dependents\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\dependents\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\dependents\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\dependents\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="core\Camera.cpp" />
+    <ClCompile Include="core\Program.cpp" />
+    <ClCompile Include="core\Ray.cpp" />
+    <ClCompile Include="core\RenderQuad.cpp" />
+    <ClCompile Include="core\Shader.cpp" />
+    <ClCompile Include="core\Texture.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="material\Material.cpp" />
+    <ClCompile Include="renderer\GLSLTestRenderer.cpp" />
+    <ClCompile Include="renderer\TestRenderer.cpp" />
+    <ClCompile Include="shape\Sphere.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\dependents\glm\glm\common.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\exponential.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\ext.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\fwd.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\geometric.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\glm.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\integer.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat2x2.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat2x3.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat2x4.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat3x2.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat3x3.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat3x4.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat4x2.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat4x3.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\mat4x4.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\matrix.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\packing.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\trigonometric.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\vec2.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\vec3.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\vec4.hpp" />
+    <ClInclude Include="..\dependents\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="..\dependents\imgui\imconfig.h" />
+    <ClInclude Include="..\dependents\imgui\imgui.h" />
+    <ClInclude Include="..\dependents\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\dependents\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\dependents\imgui\imgui_internal.h" />
+    <ClInclude Include="..\dependents\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\dependents\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\dependents\imgui\imstb_truetype.h" />
+    <ClInclude Include="core\Camera.h" />
+    <ClInclude Include="core\Program.h" />
+    <ClInclude Include="core\Random.h" />
+    <ClInclude Include="core\Ray.h" />
+    <ClInclude Include="core\RenderQuad.h" />
+    <ClInclude Include="core\Shader.h" />
+    <ClInclude Include="core\Texture.h" />
+    <ClInclude Include="material\Material.h" />
+    <ClInclude Include="renderer\GLSLTestRenderer.h" />
+    <ClInclude Include="renderer\Renderer.h" />
+    <ClInclude Include="renderer\TestRenderer.h" />
+    <ClInclude Include="shape\Shape.h" />
+    <ClInclude Include="shape\Sphere.h" />
+    <ClInclude Include="test.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\AccumFrag.glsl" />
+    <None Include="..\shaders\BTDFFrag.glsl" />
+    <None Include="..\shaders\Copy.glsl" />
+    <None Include="..\shaders\Copy2.glsl" />
+    <None Include="..\shaders\LearnThis.glsl" />
+    <None Include="..\shaders\OutputFrag.glsl" />
+    <None Include="..\shaders\PathTraceFrag.glsl" />
+    <None Include="..\shaders\GLSLTestFrag.glsl" />
+    <None Include="..\shaders\PBRPathTraceFrag.glsl" />
+    <None Include="..\shaders\PostFrag.glsl" />
+    <None Include="..\shaders\TestFrag.glsl" />
+    <None Include="..\shaders\QuadVert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\shaders\LearnThis2.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
