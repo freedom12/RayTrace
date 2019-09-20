@@ -101,8 +101,8 @@ static int init()
 	ImGui_ImplOpenGL3_Init(glsl_version);
 
 
-	//renderer = new GLSLTestRenderer(width, height);
-	renderer = new TestRenderer(width, height);
+	renderer = new GLSLTestRenderer(width, height);
+	//renderer = new TestRenderer(width, height);
 	return 0;
 }
 

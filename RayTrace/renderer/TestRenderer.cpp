@@ -7,7 +7,7 @@
 TestRenderer::TestRenderer(const int w, const int h) : width(w), height(h)
 {
 	depthCount = 5;
-	sampleCount = 2;
+	sampleCount = 5;
 	auto from = glm::vec3(0, 0, -10);
 	auto to = glm::vec3(0, 0, -1);
 	camera = std::make_unique<Camera>(from, to, glm::vec3(0, 1, 0), 20, width/height, 0.1, glm::distance(from, to));
@@ -22,16 +22,16 @@ TestRenderer::TestRenderer(const int w, const int h) : width(w), height(h)
 	target = std::make_unique<RenderQuad>();
 
 	scene = std::make_unique<ShapeList>();
-	//scene->add(std::make_unique<Sphere>(glm::vec3(0, 0, -1), 0.5f,
-	//                                    std::make_shared<Lambertian>(glm::vec3(0.8, 0.3, 0.3))));
-	//scene->add(std::make_unique<Sphere>(glm::vec3(0, -100.5f, -1), 100.0f,
-	//                                    std::make_shared<Lambertian>(glm::vec3(0.8, 0.8, 0.0))));
-	//scene->add(std::make_unique<Sphere>(glm::vec3(1, 0, -1), 0.5f,
-	//                                    std::make_shared<Metal>(glm::vec3(0.8, 0.6, 0.2))));
+	scene->add(std::make_unique<Sphere>(glm::vec3(0, 0, -1), 0.5f,
+	                                    std::make_shared<Lambertian>(glm::vec3(0.8, 0.3, 0.3))));
+	scene->add(std::make_unique<Sphere>(glm::vec3(0, -100.5f, -1), 100.0f,
+	                                    std::make_shared<Lambertian>(glm::vec3(0.8, 0.8, 0.0))));
+	scene->add(std::make_unique<Sphere>(glm::vec3(1, 0, -1), 0.5f,
+	                                    std::make_shared<Metal>(glm::vec3(0.8, 0.6, 0.2))));
 	scene->add(std::make_unique<Sphere>(glm::vec3(0, 0, -1), 0.5f,
 	                                    std::make_shared<Dielectric>(1.5)));
-	//scene->add(std::make_unique<Sphere>(glm::vec3(-1, 0, -1), -0.45f,
-	//                                    std::make_shared<Dielectric>(1.5)));
+	scene->add(std::make_unique<Sphere>(glm::vec3(-1, 0, -1), -0.45f,
+	                                    std::make_shared<Dielectric>(1.5)));
 
 	const auto size = width * height;
 	//auto data = new glm::vec3[size]();

@@ -16,8 +16,8 @@ GLSLTestRenderer::GLSLTestRenderer(const int w, const int h) : width(w), height(
 	target = std::make_unique<RenderQuad>();
 
 	
-	//rayTraceProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/Copy.glsl");
-	rayTraceProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/BTDFFrag.glsl");
+	rayTraceProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/Copy2.glsl");
+	//rayTraceProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/BTDFFrag.glsl");
 	accumProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/AccumFrag.glsl");
 	outputProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/OutputFrag.glsl");
 	//postProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/PostFrag.glsl");

@@ -116,8 +116,7 @@ public:
 			kd = 1;
 		}
 
-		auto r = Random::getUnitFloat();
-		r = 0;
+		const auto r = Random::getUnitFloat();
 		if (r < kd)
 		{
 			scattered = Ray(isect.p, reflectDir);
@@ -126,7 +125,6 @@ public:
 		{
 			scattered = Ray(isect.p, refractDir.value_or(glm::vec3()));
 		}
-		attenuation = glm::vec3(sqrt(schlick(cos, ior)));
 		return true;
 	};
 
