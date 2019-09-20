@@ -341,7 +341,7 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 	//NoV = entering ? NoV : -NoV;
 
 	float F = Fr(NoV, 1/ior);
-	r = 1;
+	//r = 1;
 	if (r > F)
 	{
 		vec3 upVector = abs(N.z) < 0.999 ? vec3(0, 0, 1) : vec3(1, 0, 0);
@@ -387,19 +387,14 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 	float ior = 1.5;
 	ior = entering ? 1/ior : ior;
 	
-	vec3 H = normalize(V + L * ior);
-	float NoH = dot(H, N);
-	float LoH = dot(L, H);
-	float VoH = dot(V, H);
 	float F = Fr(abs(NoV), ior);
 	if (type == 1)
 	{
-		
+		vec3 H = normalize(V + L * ior);
+		float NoH = dot(H, N);
+		float LoH = dot(L, H);
+		float VoH = dot(V, H);
 
-		NoH = dot(H, N);
-		LoH = dot(L, H);
-		VoH = dot(V, H);
-		
 		float D = D_GTR2(isect.mat.roughness, abs(NoH));
 		float G = Vis_Smith(isect.mat.roughness, abs(NoL), abs(NoV));
 
@@ -407,9 +402,9 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 		float dwh_dwi = abs((ior * ior * LoH) / (sqrtDenom * sqrtDenom));
 		pdf = D * dwh_dwi;
 
-		float factor = 1;//1.0 / ior;
-		//float factor = abs(VoH * LoH / (NoL * NoV));
-		ret = isect.mat.albedo.xyz * factor * factor * abs(VoH * LoH / (NoL * NoV)) * (1 - F) * (NoL) / abs(LoH);
+		float factor = abs(VoH * LoH / (NoL * NoV));
+		//ret = isect.mat.albedo.xyz * G * factor * abs(NoL) / abs(NoH * LoH);
+		ret = isect.mat.albedo.xyz * (1-F) * factor * NoL / abs(LoH);
 	}
 	else 
 	{	
@@ -541,7 +536,7 @@ vec3 GetColor(Ray ray, int depth)
 		else 
 		{
 			isect.isSpecularBounce = false;
-			//radiance += DirectLight(ray, isect) * throughput;
+			radiance += DirectLight(ray, isect) * throughput;
 			throughput *= GlassSampleF(ray, isect, dir, pdf);
 		}
 
