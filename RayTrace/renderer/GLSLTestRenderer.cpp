@@ -9,7 +9,7 @@
 
 GLSLTestRenderer::GLSLTestRenderer(const int w, const int h) : width(w), height(h)
 {
-	auto from = glm::vec3(0, 0, -30);
+	auto from = glm::vec3(-0, 5, -30);
 	auto to = glm::vec3(0, 0, 0);
 	camera = std::make_unique<Camera>(from, to, glm::vec3(0, 1, 0), 20, width / height, 1, glm::distance(from, to));
 

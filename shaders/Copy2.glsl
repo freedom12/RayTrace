@@ -43,22 +43,23 @@ struct Sphere { vec3 center; float radius; Material mat;};
 struct Camera { vec3 u; vec3 v; vec3 w; vec3 position; float fov; float focalDist; float aperture; };
 uniform Camera camera;
 
-const int Sphere_Size = 10;
+const int Sphere_Size = 11;
 Sphere sphereList[Sphere_Size];
 const int Light_Size = 2;
 Sphere lightList[Light_Size];
 
-Sphere sphere1 = Sphere(vec3(0, -10005, 0.0), 10000.0, Material(vec4(0.8, 0.75, 0.7, 1.0), 0.0, 1.0, 1.0, 0.0));
+Sphere sphere1 = Sphere(vec3(0, -10005, 0.0), 10000.0, Material(vec4(1, 1, 1, 1.0), 0.0, 0.05, 1.0, 0.0));
 Sphere sphere2 = Sphere(vec3(30.0, 0.0, 0.0), 5, Material(vec4(242.0/255.0, 163.0/255.0, 137.0/255.0, 1.0), 1.0, 0.1, 1.0, 0.0));
 Sphere sphere3 = Sphere(vec3(20.0, 0.0, 0.0), 5, Material(vec4(255.0/255.0, 181.0/255.0, 73.0/255.0, 1.0), 1.0, 0.4, 1.0, 0.0));
 Sphere sphere4 = Sphere(vec3(10.0, 0.0, 0.0), 5, Material(vec4(90.0/255.0, 150.0/255.0, 200.0/255.0, 1.0), 0.0, 0.3, 1.0, 0.0));
 Sphere sphere5 = Sphere(vec3(0.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 1.0), 0.0, 1.0, 1.0, 0.0));
 Sphere sphere6 = Sphere(vec3(-10.0, 0.0, 0.0), 5, Material(vec4(0.0, 1.0, 1.0, 1.0), 0.0, 0.1, 2.0, 0.0));
-Sphere sphere7 = Sphere(vec3(-20.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.1, 2.0, 0.0));
-Sphere sphere8 = Sphere(vec3(-30.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.25, 2.0, 0.0));
+Sphere sphere7 = Sphere(vec3(-20.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.1, 1.0, 0.0));
+Sphere sphere8 = Sphere(vec3(-30.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.4, 1.0, 0.0));
+Sphere sphere9 = Sphere(vec3(-35.0, 5, 25), 10, Material(vec4(1.0, 0.0, 0.0, 1.0), 0.0, 0.1, 0.1, 0.0));
 
-Sphere sphereL1 = Sphere(vec3(-10.0, 10, -5), 1, Material(vec4(1.0, 1.0, 1.0, 1.0), 1.0, 1.0, 1.0, 55.0));
-Sphere sphereL2 = Sphere(vec3(15.0, 10.0, 5), 1, Material(vec4(1.0, 0.0, 0.0, 1.0), 1.0, 1.0, 1.0, 35.0));
+Sphere sphereL1 = Sphere(vec3(-10.0, 10, -5), 1, Material(vec4(1.0, 1.0, 1.0, 1.0), 1.0, 1.0, 1.0, 50.0));
+Sphere sphereL2 = Sphere(vec3(15.0, 10.0, 5), 1, Material(vec4(1.0, 0.0, 0.0, 1.0), 1.0, 1.0, 1.0, 40.0));
 
 void initScene()
 {
@@ -70,8 +71,9 @@ void initScene()
 	sphereList[5] = sphere6;
 	sphereList[6] = sphere7;
 	sphereList[7] = sphere8;
-	sphereList[8] = sphereL1;
-	sphereList[9] = sphereL2;
+	sphereList[8] = sphere9;
+	sphereList[9] = sphereL1;
+	sphereList[10] = sphereL2;
 	lightList[0] = sphereL1;
 	lightList[1] = sphereL2;
 }
@@ -221,12 +223,26 @@ float Vis_Smith( float roughness, float NoV, float NoL )
 
 	b = NoL * NoL;
 	float Vis_SmithL = (NoL + sqrt(a2 + b - a2 * b));
-	return 1.0 / ( Vis_SmithV * Vis_SmithL );
 
-	//float k = (roughness + 1) * (roughness + 1) / 8;
-	//float g1 = NoV / (NoV * (1 - k) + k);
-	//float g2 = NoL / (NoL * (1 - k) + k);
-   // return g1*g2 / (4 * NoV * NoL + EPS);
+	return 1.0 / ( Vis_SmithV * Vis_SmithL ) * 4 * NoL * NoV;
+
+	/*
+	float k = (roughness + 1) * (roughness + 1) / 8;
+	float g1 = NoV / (NoV * (1 - k) + k);
+	float g2 = NoL / (NoL * (1 - k) + k);
+    return g1*g2 / (4 * NoV * NoL + EPS);
+	*/
+	/*
+	float alpha = roughness * roughness;
+	float alpha2 = alpha * alpha;
+	float tan2 = 1.f / (NoV * NoV) - 1.f;
+	float g1 = 2.f / (1.f + sqrt(1 + alpha2 * tan2));
+
+	tan2 = 1.f / (NoL * NoL) - 1.f;
+	float g2 = 2.f / (1.f + sqrt(1 + alpha2 * tan2));
+
+	return g1 * g2;
+	*/
 }
 
 float SchlickFresnel(float u)
@@ -300,7 +316,7 @@ vec3 MetalF(Ray ray, Intersection isect, vec3 dir, inout float pdf)
 	float sPDF = D * NoH / (4.0 * VoH);
 	
 	pdf = dRatio * dPDF + sRatio * sPDF;
-	ret = (dColor / PI * dK * dRatio + F * G * D * sRatio) * NoL / pdf;
+	ret = (dColor / PI * dK * dRatio + F * G * D / (4 * NoL * NoV) * sRatio) * NoL / pdf;
 
 	return ret;
 }
@@ -333,28 +349,26 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 	vec3 V = -ray.direction;
 	vec3 L = dir;
 	
-	bool entering = dot(-ray.direction, isect.normal) > 0;
+	bool entering = dot(-ray.direction, isect.normal) < 0;
 
 	float ior = 1.5;
-	ior = entering ? 1/ior : ior;
-	float NoV = dot(N, V);
+	ior = entering ? ior : 1/ior;
+	float NoV = abs(dot(N, V));
+	float NoL = abs(dot(N, L));
 	//NoV = entering ? NoV : -NoV;
 
-	float F = Fr(NoV, 1.5);
-	//r = 1;
-	F = 0.3;
+	vec3 upVector = abs(N.z) < 0.999 ? vec3(0, 0, 1) : vec3(1, 0, 0);
+	vec3 tangentX = normalize(cross(upVector, N));
+	vec3 tangentY = cross(N, tangentX);
+
+	float r1 = rand();
+	float r2 = rand();
+	vec3 H = ImportanceGGXSample(isect.mat.roughness, r1, r2);
+	H = tangentX * H.x + tangentY * H.y + N * H.z;
+	float F = Fr(entering?NoL:NoV, ior);
+	//r = 0;
 	if (r > F)
 	{
-		vec3 upVector = abs(N.z) < 0.999 ? vec3(0, 0, 1) : vec3(1, 0, 0);
-		vec3 tangentX = normalize(cross(upVector, N));
-		vec3 tangentY = cross(N, tangentX);
-
-		float r1 = rand();
-		float r2 = rand();
-		vec3 H = ImportanceGGXSample(isect.mat.roughness, r1, r2);
-		H = tangentX * H.x + tangentY * H.y + N * H.z;
-
-		//H = entering ? H : -H;
 		dir = refract(-V, H, ior);
 
 		if (dir != vec3(0))
@@ -366,19 +380,8 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 	}
 	
 	type = 2;
+	dir = reflect(-V, H);
 	//dir = MetalDir(ray, isect);
-
-	float r1 = rand();
-	float r2 = rand();
-
-	vec3 upVector = abs(N.z) < 0.999 ? vec3(0, 0, 1) : vec3(1, 0, 0);
-	vec3 tangentX = normalize(cross(upVector, N));
-	vec3 tangentY = cross(N, tangentX);
-
-	vec3 sampleDir = ImportanceGGXSample(isect.mat.roughness, r1, r2);
-	sampleDir = tangentX * sampleDir.x + tangentY * sampleDir.y + N * sampleDir.z;
-	dir = reflect(-V, sampleDir);
-
 	return dir;
 }
 
@@ -390,39 +393,36 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 	vec3 N = isect.ffnormal;
 	vec3 V = -ray.direction;
 	vec3 L = dir;
-	float NoL = dot(N, L);
-	float NoV = dot(N, V);
+	float NoL = abs(dot(N, L));
+	float NoV = abs(dot(N, V));
 
 
-	bool entering = dot(-ray.direction, isect.normal) > 0;
+	bool entering = dot(-ray.direction, isect.normal) < 0;
 
 	float ior = 1.5;
-	ior = entering ? 1/ior : ior;
+	ior = entering ? ior : 1/ior;
 	
-	float F = Fr(abs(NoV), ior);
+	float F = Fr(entering?NoL:NoV, ior);
 	if (type == 1)
 	{
-		vec3 H = normalize(V + L * ior);
+		vec3 H = normalize(V + L * 1/ior);
+
 		float NoH = dot(H, N);
 		float LoH = dot(L, H);
 		float VoH = dot(V, H);
 
 		float D = D_GTR2(isect.mat.roughness, abs(NoH));
-		float G = Vis_Smith(isect.mat.roughness, abs(NoL), abs(NoV));
+		float G = Vis_Smith(isect.mat.roughness, (NoL), (NoV));
 
 		float sqrtDenom = VoH + ior * LoH;
 		float dwh_dwi = abs((ior * ior * LoH) / (sqrtDenom * sqrtDenom));
 		pdf = D * dwh_dwi;
-
+		
 		float factor = abs(VoH * LoH / (NoL * NoV));
-		//ret = isect.mat.albedo.xyz * G * factor * abs(NoL) / abs(NoH * LoH);
-		ret = isect.mat.albedo.xyz * factor * NoL / abs(LoH);
+		ret = isect.mat.albedo.xyz * G * factor * abs(NoL) / abs(LoH * NoH);
 	}
 	else 
 	{	
-		//ret = MetalF(ray, isect, dir, pdf);
-
-
 		vec3 N = isect.ffnormal;
 		vec3 V = -ray.direction;
 		vec3 L = dir;
@@ -439,7 +439,8 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 		
 		float dwh_dwi = 1.0 / (4.0 * VoH);
 		pdf = D * abs(NoH) * dwh_dwi * F;
-		ret = isect.mat.albedo.xyz * (F * G * D) * NoL / pdf * 0.5;
+		//ret = isect.mat.albedo.xyz * (F * G * D) * NoL / (4 * NoL * NoV + EPS) / pdf;
+		ret = isect.mat.albedo.xyz * G * VoH / (NoV * NoH);
 	}
 
 	return ret;
@@ -543,10 +544,20 @@ vec3 GetColor(Ray ray, int depth)
 	{
 		if (!List_hit(ray, EPS, INFINITY, isect))
 		{
-			float t = 0.5 * (ray.direction.y + 1.0);
-			vec3 hdrColor =(1 - t) * vec3(1.0) + t * vec3(0.5f, 0.7f, 1);//getHdr(texture2D( hdrTexture, getuv(ray.d)));
-			hdrColor *= 0.25;
+			float y = 0.5 * (ray.direction.y + 1.0);
+			float x = 0.5 * (ray.direction.x + 1.0);
+			vec3 hdrColor =(1 - y) * vec3(1.0) + y * vec3(0.5f, 0.7f, 1);//getHdr(texture2D( hdrTexture, getuv(ray.d)));
+			if ((int(y*10)%2) == (int(x*10)%2))
+			{
+				hdrColor = vec3(1);
+			}
+			else 
+			{
+				hdrColor = vec3(0);
+			}
 
+			
+			hdrColor *= 0.3;
 			radiance += hdrColor * throughput;
 			break;
 		}
