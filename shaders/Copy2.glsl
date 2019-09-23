@@ -52,7 +52,7 @@ Sphere sphere1 = Sphere(vec3(0, -10005, 0.0), 10000.0, Material(vec4(0.8, 0.75, 
 Sphere sphere2 = Sphere(vec3(30.0, 0.0, 0.0), 5, Material(vec4(242.0/255.0, 163.0/255.0, 137.0/255.0, 1.0), 1.0, 0.1, 1.0, 0.0));
 Sphere sphere3 = Sphere(vec3(20.0, 0.0, 0.0), 5, Material(vec4(255.0/255.0, 181.0/255.0, 73.0/255.0, 1.0), 1.0, 0.4, 1.0, 0.0));
 Sphere sphere4 = Sphere(vec3(10.0, 0.0, 0.0), 5, Material(vec4(90.0/255.0, 150.0/255.0, 200.0/255.0, 1.0), 0.0, 0.3, 1.0, 0.0));
-Sphere sphere5 = Sphere(vec3(0.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 1.0), 0.0, 0.1, 1.0, 0.0));
+Sphere sphere5 = Sphere(vec3(0.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 1.0), 0.0, 1.0, 1.0, 0.0));
 Sphere sphere6 = Sphere(vec3(-10.0, 0.0, 0.0), 5, Material(vec4(0.0, 1.0, 1.0, 1.0), 0.0, 0.1, 2.0, 0.0));
 Sphere sphere7 = Sphere(vec3(-20.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.1, 2.0, 0.0));
 Sphere sphere8 = Sphere(vec3(-30.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.25, 2.0, 0.0));
@@ -340,8 +340,9 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 	float NoV = dot(N, V);
 	//NoV = entering ? NoV : -NoV;
 
-	float F = Fr(NoV, 1/ior);
+	float F = Fr(NoV, 1.5);
 	//r = 1;
+	F = 0.3;
 	if (r > F)
 	{
 		vec3 upVector = abs(N.z) < 0.999 ? vec3(0, 0, 1) : vec3(1, 0, 0);
@@ -365,7 +366,18 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 	}
 	
 	type = 2;
-	dir = MetalDir(ray, isect);
+	//dir = MetalDir(ray, isect);
+
+	float r1 = rand();
+	float r2 = rand();
+
+	vec3 upVector = abs(N.z) < 0.999 ? vec3(0, 0, 1) : vec3(1, 0, 0);
+	vec3 tangentX = normalize(cross(upVector, N));
+	vec3 tangentY = cross(N, tangentX);
+
+	vec3 sampleDir = ImportanceGGXSample(isect.mat.roughness, r1, r2);
+	sampleDir = tangentX * sampleDir.x + tangentY * sampleDir.y + N * sampleDir.z;
+	dir = reflect(-V, sampleDir);
 
 	return dir;
 }
@@ -404,11 +416,30 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 
 		float factor = abs(VoH * LoH / (NoL * NoV));
 		//ret = isect.mat.albedo.xyz * G * factor * abs(NoL) / abs(NoH * LoH);
-		ret = isect.mat.albedo.xyz * (1-F) * factor * NoL / abs(LoH);
+		ret = isect.mat.albedo.xyz * factor * NoL / abs(LoH);
 	}
 	else 
 	{	
-		ret = MetalF(ray, isect, dir, pdf);
+		//ret = MetalF(ray, isect, dir, pdf);
+
+
+		vec3 N = isect.ffnormal;
+		vec3 V = -ray.direction;
+		vec3 L = dir;
+		vec3 H = normalize(L + V);
+		float NoH = saturate(dot(H, N));
+		float NoL = saturate(dot(L, N));
+		float NoV = saturate(dot(N, V));
+		float LoH = saturate(dot(L, H));
+		float VoH = saturate(dot(V, H));
+
+
+		float D = D_GTR2(isect.mat.roughness, NoH);
+		float G = Vis_Smith(isect.mat.roughness, NoL, NoV);
+		
+		float dwh_dwi = 1.0 / (4.0 * VoH);
+		pdf = D * abs(NoH) * dwh_dwi * F;
+		ret = isect.mat.albedo.xyz * (F * G * D) * NoL / pdf * 0.5;
 	}
 
 	return ret;
