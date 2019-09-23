@@ -36,6 +36,7 @@ struct Intersection
 	Material mat;
 	vec4 emissive;
 	bool isSpecularBounce;
+	int objId;
 };
 
 struct Ray { vec3 origin; vec3 direction; };
@@ -57,6 +58,7 @@ Sphere sphere6 = Sphere(vec3(-10.0, 0.0, 0.0), 5, Material(vec4(0.0, 1.0, 1.0, 1
 Sphere sphere7 = Sphere(vec3(-20.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.1, 1.0, 0.0));
 Sphere sphere8 = Sphere(vec3(-30.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.4, 1.0, 0.0));
 Sphere sphere9 = Sphere(vec3(-35.0, 5, 25), 10, Material(vec4(1.0, 0.0, 0.0, 1.0), 0.0, 0.1, 0.1, 0.0));
+//Sphere sphere10 = Sphere(vec3(5, 0, -7.5), 3, Material(vec4(1.0, 1.0, 1.0, -1.0), 0.0, 0.1, 1.0, 0.0));
 
 Sphere sphereL1 = Sphere(vec3(-10.0, 10, -5), 1, Material(vec4(1.0, 1.0, 1.0, 1.0), 1.0, 1.0, 1.0, 50.0));
 Sphere sphereL2 = Sphere(vec3(15.0, 10.0, 5), 1, Material(vec4(1.0, 0.0, 0.0, 1.0), 1.0, 1.0, 1.0, 40.0));
@@ -72,6 +74,7 @@ void initScene()
 	sphereList[6] = sphere7;
 	sphereList[7] = sphere8;
 	sphereList[8] = sphere9;
+
 	sphereList[9] = sphereL1;
 	sphereList[10] = sphereL2;
 	lightList[0] = sphereL1;
@@ -149,6 +152,7 @@ bool List_hit( Ray ray, float tMin, float tMax, inout Intersection isect )
 	{
 		if (Sphere_hit(sphereList[i], ray, tMin, tClosest, isect))
 		{
+			isect.objId = i;
 			tClosest = isect.t;
 			ret = true;
 		}
@@ -269,7 +273,7 @@ vec3 MetalDir(Ray ray, Intersection isect)
 	vec3 tangentX = normalize(cross(upVector, N));
 	vec3 tangentY = cross(N, tangentX);
 
-	if (probability < dRatio) // sample diffuse
+	if (probability < dRatio) 
 	{
 		vec3 sampleDir = CosineHemisphereSample(r1, r2);
 		sampleDir = tangentX * sampleDir.x + tangentY * sampleDir.y + N * sampleDir.z;
@@ -337,7 +341,6 @@ float Fr(float cosTheta, float ior) {
 	float Fr = R0 + (1 - R0) * pow((1 - cosTheta), 5);
 
 	return Fr;
-
 }
 
 vec3 GlassDir(Ray ray, Intersection isect, inout int type)
@@ -355,7 +358,6 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 	ior = entering ? ior : 1/ior;
 	float NoV = abs(dot(N, V));
 	float NoL = abs(dot(N, L));
-	//NoV = entering ? NoV : -NoV;
 
 	vec3 upVector = abs(N.z) < 0.999 ? vec3(0, 0, 1) : vec3(1, 0, 0);
 	vec3 tangentX = normalize(cross(upVector, N));
@@ -365,8 +367,8 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 	float r2 = rand();
 	vec3 H = ImportanceGGXSample(isect.mat.roughness, r1, r2);
 	H = tangentX * H.x + tangentY * H.y + N * H.z;
+
 	float F = Fr(entering?NoL:NoV, ior);
-	//r = 0;
 	if (r > F)
 	{
 		dir = refract(-V, H, ior);
@@ -379,9 +381,9 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 		}
 	}
 	
-	type = 2;
+	type = 0;
 	dir = reflect(-V, H);
-	//dir = MetalDir(ray, isect);
+
 	return dir;
 }
 
@@ -457,6 +459,60 @@ vec3 GlassSampleF(Ray ray, Intersection isect, inout vec3 dir, inout float pdf)
 	return ret;
 }
 
+vec3 MediumDir(Ray ray, Intersection isect)
+{
+	vec3 dir;
+	vec3 N = isect.ffnormal;
+	vec3 V = -ray.direction;
+
+	float r1 = rand();
+	float r2 = rand();
+
+	vec3 upVector = abs(N.z) < 0.999 ? vec3(0, 0, 1) : vec3(1, 0, 0);
+	vec3 tangentX = normalize(cross(upVector, N));
+	vec3 tangentY = cross(N, tangentX);
+
+	vec3 sampleDir = CosineHemisphereSample(r1, r2);
+	sampleDir = tangentX * sampleDir.x + tangentY * sampleDir.y + N * sampleDir.z;
+	dir = -sampleDir;
+	
+	
+	dir = ray.direction;
+	return dir;
+}
+
+vec3 MediumF(Ray ray, Intersection isect, vec3 dir, inout float pdf, Intersection lastIsect)
+{
+	vec3 ret;
+
+	if (isect.objId != -1 && isect.objId == lastIsect.objId)
+	{
+		pdf = 1;
+		float k = length(isect.p - lastIsect.p)/ 5;
+		k = saturate(k);
+		k = min(k, 0.8);
+		ret = (1-k) * (isect.mat.albedo.xyz);
+	}
+	else 
+	{
+		pdf = 1;
+		ret = vec3(1);
+	}
+	pdf = 1;
+	ret = vec3(1);
+	return ret;
+}
+
+vec3 MediumSampleF(Ray ray, Intersection isect, inout vec3 dir, inout float pdf, Intersection lastIsect)
+{
+	vec3 ret;
+
+	dir = MediumDir(ray, isect);
+	ret = MediumF(ray, isect, dir, pdf, lastIsect);
+
+	return ret;
+}
+
 float PowerHeuristic(float a, float b){
     float t = a * a;
 	float ret = t / (b * b + t);
@@ -502,18 +558,27 @@ vec3 DirectLight(Ray ray, Intersection isect)
 			{
 				f = MetalF(ray, isect, shadowRay.direction, brdfPdf);
 			}
+			else if (dot(shadowRay.direction, isect.normal) > 0)
+			{
+				f = GlassF(ray, isect, shadowRay.direction, brdfPdf, 0);
+			}
 			else 
 			{
-				if (dot(shadowRay.direction, isect.normal) < 0)
-				{
-					f = GlassF(ray, isect, shadowRay.direction, brdfPdf, 1);
-				}
+				f = GlassF(ray, isect, shadowRay.direction, brdfPdf, 1);
 			}
-			
-			
 			color += f * lightColor * PowerHeuristic(lightPdf, brdfPdf) * brdfPdf / lightPdf;
 		}
 
+
+		int type;
+		if (isect.mat.albedo.w > 1.0 - EPS)
+		{
+			shadowRay.direction = MetalDir(ray, isect);
+		} 
+		else 
+		{
+			shadowRay.direction = GlassDir(ray, isect, type);
+		}
 		shadowRay.direction  = MetalDir(ray, isect);
 		shadowRay.origin = isect.p + EPS * shadowRay.direction;
 		result = List_hit(shadowRay, EPS, lightDis + EPS * 2, shadowIsect);
@@ -521,7 +586,17 @@ vec3 DirectLight(Ray ray, Intersection isect)
 		if(result && shadowIsect.mat.emission > 0)
 		{
 			float brdfPdf;
-			vec3 f = MetalF(ray, isect, shadowRay.direction, brdfPdf);
+			vec3 f;
+			if (isect.mat.albedo.w > 1.0 - EPS)
+			{
+				f = MetalF(ray, isect, shadowRay.direction, brdfPdf);
+			}
+			else
+			{
+				f = GlassF(ray, isect, shadowRay.direction, brdfPdf, type);
+			}
+			
+			//f = MetalF(ray, isect, shadowRay.direction, brdfPdf);
 			color += f * lightColor * PowerHeuristic(brdfPdf, lightPdf);// * brdfPdf / brdfPdf
 		}
 		
@@ -534,7 +609,9 @@ vec3 DirectLight(Ray ray, Intersection isect)
 
 vec3 GetColor(Ray ray, int depth)
 {
+	Intersection lastIsect;
 	Intersection isect;
+	isect.objId = -1;
 
 	vec3 radiance = vec3(0.0);
 	vec3 throughput = vec3(1.0);
@@ -542,6 +619,7 @@ vec3 GetColor(Ray ray, int depth)
 	float pdf = 1.0;
 	for (int i = 0; i < depth; i++)
 	{
+		lastIsect = isect;
 		if (!List_hit(ray, EPS, INFINITY, isect))
 		{
 			float y = 0.5 * (ray.direction.y + 1.0);
@@ -561,7 +639,6 @@ vec3 GetColor(Ray ray, int depth)
 			radiance += hdrColor * throughput;
 			break;
 		}
-
 		Material mat = isect.mat;
 
 		if (mat.emission > 0) {
@@ -575,13 +652,17 @@ vec3 GetColor(Ray ray, int depth)
 			radiance += DirectLight(ray, isect) * throughput;
 			throughput *= MetalSampleF(ray, isect, dir, pdf);
 		}
-		else 
+		else if(mat.albedo.w > 0 - EPS) 
 		{
 			isect.isSpecularBounce = false;
 			radiance += DirectLight(ray, isect) * throughput;
 			throughput *= GlassSampleF(ray, isect, dir, pdf);
 		}
-
+		else 
+		{
+			isect.isSpecularBounce = false;
+			throughput *= MediumSampleF(ray, isect, dir, pdf, lastIsect);
+		}
 		ray = Ray(isect.p + EPS * dir, dir);
 	}
 

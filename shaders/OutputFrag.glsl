@@ -1,10 +1,9 @@
 #version 460
 
 in vec2 TexCoords;
-out vec4 FragColor;
-
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BloomColor;
 layout(binding = 0) uniform sampler2D rayTraceTexture;
-uniform float invSampleCounter;
 
 const float gamma = 2.2;
 
@@ -18,7 +17,18 @@ vec4 ToneMap(in vec4 c, float limit)
 void main()
 {
 	vec4 result = texture(rayTraceTexture, TexCoords);
-	result = ToneMap(result, 1.5);
-	result = pow(result, vec4(1.0 / gamma));
+	float luminance = 0.3 * result.x + 0.6 * result.y + 0.1 * result.z;
+	if(luminance > 10)
+	{
+		BloomColor = result;
+	}
+	else 
+	{
+		BloomColor = vec4(0, 0, 0, 1);
+	}
+
+	
+	//result = ToneMap(result, 1.5);
+	//result = pow(result, vec4(1.0 / gamma));
 	FragColor = vec4(result.xyz, 1.0);
 }

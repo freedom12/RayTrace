@@ -20,7 +20,7 @@ GLSLTestRenderer::GLSLTestRenderer(const int w, const int h) : width(w), height(
 	//rayTraceProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/BTDFFrag.glsl");
 	accumProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/AccumFrag.glsl");
 	outputProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/OutputFrag.glsl");
-	//postProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/PostFrag.glsl");
+	postProgram = createProgram("../shaders/QuadVert.glsl", "../shaders/PostFrag.glsl");
 
 	glGenFramebuffers(1, &rayTraceFBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, rayTraceFBO);
@@ -44,23 +44,25 @@ GLSLTestRenderer::GLSLTestRenderer(const int w, const int h) : width(w), height(
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, accumTexture, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	//glGenFramebuffers(1, &outputFBO);
-	//glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
-	//glGenTextures(1, &outputTexture);
-	//glBindTexture(GL_TEXTURE_2D, outputTexture);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glBindTexture(GL_TEXTURE_2D, 0);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, outputTexture, 0);
-	//glGenTextures(1, &bloomTexture);
-	//glBindTexture(GL_TEXTURE_2D, bloomTexture);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glBindTexture(GL_TEXTURE_2D, 0);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, bloomTexture, 0);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glGenFramebuffers(1, &outputFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
+	glGenTextures(1, &outputTexture);
+	glBindTexture(GL_TEXTURE_2D, outputTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, outputTexture, 0);
+	glGenTextures(1, &bloomTexture);
+	glBindTexture(GL_TEXTURE_2D, bloomTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, bloomTexture, 0);
+	GLuint attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	glDrawBuffers(2, attachments);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 GLSLTestRenderer::~GLSLTestRenderer()
@@ -115,9 +117,6 @@ void GLSLTestRenderer::render()
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	
-
-	
 
 	glBindFramebuffer(GL_FRAMEBUFFER, accumFBO);
 	glActiveTexture(GL_TEXTURE0);
@@ -128,26 +127,23 @@ void GLSLTestRenderer::render()
 
 	std::cout << "!!!!!!!!!!!!!!!!!!" << curSampleCount << std::endl;
 	
-	outputProgram->use();
-	glUniform1f(glGetUniformLocation(outputProgram->getId(), "invSampleCounter"), 1.0f / float(curSampleCount));
-	outputProgram->unUse();
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, rayTraceTexture);
-	//glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
 	target->draw(*outputProgram);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, outputTexture);
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, bloomTexture);
-	//target->draw(*postProgram);
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, 0);
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, outputTexture);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, bloomTexture);
+	target->draw(*postProgram);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 std::unique_ptr<Program> GLSLTestRenderer::createProgram(const std::string &vertFilePath,
