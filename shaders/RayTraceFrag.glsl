@@ -25,6 +25,7 @@ struct Material
 	float roughness; 
 	float specular; 
 	float emission;
+	float ior;
 };
 
 struct Intersection 
@@ -36,7 +37,6 @@ struct Intersection
 	Material mat;
 	vec4 emissive;
 	bool isSpecularBounce;
-	int objId;
 };
 
 struct Ray { vec3 origin; vec3 direction; };
@@ -49,19 +49,19 @@ Sphere sphereList[Sphere_Size];
 const int Light_Size = 2;
 Sphere lightList[Light_Size];
 
-Sphere sphere1 = Sphere(vec3(0, -10005, 0.0), 10000.0, Material(vec4(1, 1, 1, 1.0), 0.0, 0.05, 1.0, 0.0));
-Sphere sphere2 = Sphere(vec3(30.0, 0.0, 0.0), 5, Material(vec4(242.0/255.0, 163.0/255.0, 137.0/255.0, 1.0), 1.0, 0.1, 1.0, 0.0));
-Sphere sphere3 = Sphere(vec3(20.0, 0.0, 0.0), 5, Material(vec4(255.0/255.0, 181.0/255.0, 73.0/255.0, 1.0), 1.0, 0.4, 1.0, 0.0));
-Sphere sphere4 = Sphere(vec3(10.0, 0.0, 0.0), 5, Material(vec4(90.0/255.0, 150.0/255.0, 200.0/255.0, 1.0), 0.0, 0.3, 1.0, 0.0));
-Sphere sphere5 = Sphere(vec3(0.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 1.0), 0.0, 1.0, 1.0, 0.0));
-Sphere sphere6 = Sphere(vec3(-10.0, 0.0, 0.0), 5, Material(vec4(0.0, 1.0, 1.0, 1.0), 0.0, 0.1, 2.0, 0.0));
-Sphere sphere7 = Sphere(vec3(-20.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.1, 1.0, 0.0));
-Sphere sphere8 = Sphere(vec3(-30.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.4, 1.0, 0.0));
-Sphere sphere9 = Sphere(vec3(-35.0, 5, 25), 10, Material(vec4(1.0, 0.0, 0.0, 1.0), 0.0, 0.1, 0.1, 0.0));
+Sphere sphere1 = Sphere(vec3(0, -10005, 0.0), 10000.0, Material(vec4(1, 1, 1, 1.0), 0.0, 0.05, 1.0, 0.0, 1.0));
+Sphere sphere2 = Sphere(vec3(30.0, 0.0, 0.0), 5, Material(vec4(242.0/255.0, 163.0/255.0, 137.0/255.0, 1.0), 1.0, 0.1, 1.0, 0.0, 1.0));
+Sphere sphere3 = Sphere(vec3(20.0, 0.0, 0.0), 5, Material(vec4(255.0/255.0, 181.0/255.0, 73.0/255.0, 1.0), 1.0, 0.4, 1.0, 0.0, 1.0));
+Sphere sphere4 = Sphere(vec3(10.0, 0.0, 0.0), 5, Material(vec4(90.0/255.0, 150.0/255.0, 200.0/255.0, 1.0), 0.0, 0.3, 1.0, 0.0, 1.0));
+Sphere sphere5 = Sphere(vec3(0.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 1.0), 0.0, 1.0, 1.0, 0.0, 1.0));
+Sphere sphere6 = Sphere(vec3(-10.0, 0.0, 0.0), 5, Material(vec4(0.0, 1.0, 1.0, 1.0), 0.0, 0.1, 2.0, 0.0, 1.0));
+Sphere sphere7 = Sphere(vec3(-20.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.1, 1.0, 0.0, 1.5));
+Sphere sphere8 = Sphere(vec3(-30.0, 0.0, 0.0), 5, Material(vec4(1.0, 1.0, 1.0, 0.0), 0.0, 0.4, 1.0, 0.0, 1.5));
+Sphere sphere9 = Sphere(vec3(-35.0, 5, 25), 10, Material(vec4(1.0, 0.0, 0.0, 1.0), 0.0, 0.1, 0.1, 0.0, 1.0));
 //Sphere sphere10 = Sphere(vec3(5, 0, -7.5), 3, Material(vec4(1.0, 1.0, 1.0, -1.0), 0.0, 0.1, 1.0, 0.0));
 
-Sphere sphereL1 = Sphere(vec3(-10.0, 10, -5), 1, Material(vec4(1.0, 1.0, 1.0, 1.0), 1.0, 1.0, 1.0, 50.0));
-Sphere sphereL2 = Sphere(vec3(15.0, 10.0, 5), 1, Material(vec4(1.0, 0.0, 0.0, 1.0), 1.0, 1.0, 1.0, 40.0));
+Sphere sphereL1 = Sphere(vec3(-15, 10, -3), 1, Material(vec4(1.0, 1.0, 1.0, 1.0), 1.0, 1.0, 1.0, 50.0, 1.0));
+Sphere sphereL2 = Sphere(vec3(15.0, 10.0, 5), 1, Material(vec4(1.0, 0.0, 0.0, 1.0), 1.0, 1.0, 1.0, 40.0, 1.0));
 
 void initScene()
 {
@@ -113,6 +113,7 @@ bool Sphere_hit(Sphere sphere, Ray ray, float tMin, float tMax, inout Intersecti
 				isect.normal = isect.normal * -1.0;
 			}
 			isect.ffnormal = dot(isect.normal, ray.direction) <= 0.0 ? isect.normal : isect.normal * -1.0;
+			
 			return true;
         }
 
@@ -137,6 +138,7 @@ bool Sphere_hit(Sphere sphere, Ray ray, float tMin, float tMax, inout Intersecti
 				isect.normal = isect.normal * -1.0;
 			}
 			isect.ffnormal = dot(isect.normal, ray.direction) <= 0.0 ? isect.normal : isect.normal * -1.0;
+			
 			return true;
         }
     }
@@ -152,7 +154,6 @@ bool List_hit( Ray ray, float tMin, float tMax, inout Intersection isect )
 	{
 		if (Sphere_hit(sphereList[i], ray, tMin, tClosest, isect))
 		{
-			isect.objId = i;
 			tClosest = isect.t;
 			ret = true;
 		}
@@ -354,7 +355,7 @@ vec3 GlassDir(Ray ray, Intersection isect, inout int type)
 	
 	bool entering = dot(-ray.direction, isect.normal) < 0;
 
-	float ior = 1.5;
+	float ior = isect.mat.ior;
 	ior = entering ? ior : 1/ior;
 	float NoV = abs(dot(N, V));
 	float NoL = abs(dot(N, L));
@@ -401,14 +402,13 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 
 	bool entering = dot(-ray.direction, isect.normal) < 0;
 
-	float ior = 1.5;
+	float ior = isect.mat.ior;
 	ior = entering ? ior : 1/ior;
 	
 	float F = Fr(entering?NoL:NoV, ior);
 	if (type == 1)
 	{
 		vec3 H = normalize(V + L * 1/ior);
-
 		float NoH = dot(H, N);
 		float LoH = dot(L, H);
 		float VoH = dot(V, H);
@@ -425,9 +425,6 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 	}
 	else 
 	{	
-		vec3 N = isect.ffnormal;
-		vec3 V = -ray.direction;
-		vec3 L = dir;
 		vec3 H = normalize(L + V);
 		float NoH = saturate(dot(H, N));
 		float NoL = saturate(dot(L, N));
@@ -485,21 +482,6 @@ vec3 MediumF(Ray ray, Intersection isect, vec3 dir, inout float pdf, Intersectio
 {
 	vec3 ret;
 
-	if (isect.objId != -1 && isect.objId == lastIsect.objId)
-	{
-		pdf = 1;
-		float k = length(isect.p - lastIsect.p)/ 5;
-		k = saturate(k);
-		k = min(k, 0.8);
-		ret = (1-k) * (isect.mat.albedo.xyz);
-	}
-	else 
-	{
-		pdf = 1;
-		ret = vec3(1);
-	}
-	pdf = 1;
-	ret = vec3(1);
 	return ret;
 }
 
@@ -569,7 +551,7 @@ vec3 DirectLight(Ray ray, Intersection isect)
 			color += f * lightColor * PowerHeuristic(lightPdf, brdfPdf) * brdfPdf / lightPdf;
 		}
 
-
+		
 		int type;
 		if (isect.mat.albedo.w > 1.0 - EPS)
 		{
@@ -600,6 +582,7 @@ vec3 DirectLight(Ray ray, Intersection isect)
 			color += f * lightColor * PowerHeuristic(brdfPdf, lightPdf);// * brdfPdf / brdfPdf
 		}
 		
+		
 	}
 
 	color = color / Light_Size;
@@ -611,7 +594,6 @@ vec3 GetColor(Ray ray, int depth)
 {
 	Intersection lastIsect;
 	Intersection isect;
-	isect.objId = -1;
 
 	vec3 radiance = vec3(0.0);
 	vec3 throughput = vec3(1.0);
