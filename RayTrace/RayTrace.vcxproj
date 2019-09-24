@@ -215,20 +215,11 @@ xcopy "$(SolutionDir)shaders" "$(OutDir)shaders" /D /E /I /F /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\AccumFrag.glsl" />
-    <None Include="..\shaders\BTDFFrag.glsl" />
-    <None Include="..\shaders\Copy.glsl" />
-    <None Include="..\shaders\Copy2.glsl" />
-    <None Include="..\shaders\LearnThis.glsl" />
+    <None Include="..\shaders\RayTraceFrag.glsl" />
     <None Include="..\shaders\OutputFrag.glsl" />
     <None Include="..\shaders\PathTraceFrag.glsl" />
-    <None Include="..\shaders\GLSLTestFrag.glsl" />
-    <None Include="..\shaders\PBRPathTraceFrag.glsl" />
     <None Include="..\shaders\PostFrag.glsl" />
-    <None Include="..\shaders\TestFrag.glsl" />
     <None Include="..\shaders\QuadVert.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\shaders\LearnThis2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

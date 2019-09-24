@@ -236,37 +236,14 @@
     <None Include="..\shaders\PathTraceFrag.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\shaders\TestFrag.glsl">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\GLSLTestFrag.glsl">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="..\shaders\QuadVert.glsl">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\PBRPathTraceFrag.glsl">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\LearnThis.glsl">
       <Filter>shaders</Filter>
     </None>
     <None Include="..\shaders\PostFrag.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\shaders\Copy.glsl">
+    <None Include="..\shaders\RayTraceFrag.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\shaders\BTDFFrag.glsl">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\Copy2.glsl">
-      <Filter>shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\shaders\LearnThis2.txt">
-      <Filter>shaders</Filter>
-    </Text>
   </ItemGroup>
 </Project>
