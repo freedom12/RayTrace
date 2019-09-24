@@ -233,9 +233,6 @@
     <None Include="..\shaders\OutputFrag.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\shaders\PathTraceFrag.glsl">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="..\shaders\QuadVert.glsl">
       <Filter>shaders</Filter>
     </None>

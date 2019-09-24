@@ -217,7 +217,6 @@ xcopy "$(SolutionDir)shaders" "$(OutDir)shaders" /D /E /I /F /Y</Command>
     <None Include="..\shaders\AccumFrag.glsl" />
     <None Include="..\shaders\RayTraceFrag.glsl" />
     <None Include="..\shaders\OutputFrag.glsl" />
-    <None Include="..\shaders\PathTraceFrag.glsl" />
     <None Include="..\shaders\PostFrag.glsl" />
     <None Include="..\shaders\QuadVert.glsl" />
   </ItemGroup>
