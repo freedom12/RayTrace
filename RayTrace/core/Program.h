@@ -15,4 +15,3 @@ public:
 	void unUse() const;
 	[[nodiscard]] GLuint getId() const;
 };
-

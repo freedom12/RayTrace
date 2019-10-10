@@ -85,23 +85,23 @@ public:
 
 	bool scatter(const Ray &ray, const Intersection &isect, glm::vec3 &attenuation, Ray &scattered) const override
 	{
-		auto realNormal = glm::vec3();
-		float realIOR = 0;
-		float cos = 0, kd = 0;
+		glm::vec3 realNormal;
+		float realIOR;
+		float cos, kd;
 
 		attenuation = glm::vec3(1);
-		
+
 		if (dot(ray.getDirection(), isect.normal) > 0)
 		{
 			realNormal = -isect.normal;
 			realIOR = ior;
-			cos = glm::dot(ray.getDirection(), isect.normal);
+			cos = dot(ray.getDirection(), isect.normal);
 		}
 		else
 		{
 			realNormal = isect.normal;
 			realIOR = 1.0f / ior;
-			cos = -glm::dot(ray.getDirection(), isect.normal);
+			cos = -dot(ray.getDirection(), isect.normal);
 		}
 
 		const auto reflectDir = reflect(ray.getDirection(), isect.normal);
@@ -132,7 +132,7 @@ public:
 private:
 	float ior;
 
-	[[nodiscard]] float schlick (const float cos, const float ior) const
+	[[nodiscard]] float schlick(const float cos, const float ior) const
 	{
 		auto r0 = (1 - ior) / (1 + ior);
 		r0 = r0 * r0;

@@ -12,4 +12,3 @@ private:
 	GLuint vao{};
 	GLuint vbo{};
 };
-

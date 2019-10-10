@@ -219,6 +219,7 @@ xcopy "$(SolutionDir)shaders" "$(OutDir)shaders" /D /E /I /F /Y</Command>
     <None Include="..\shaders\OutputFrag.glsl" />
     <None Include="..\shaders\PostFrag.glsl" />
     <None Include="..\shaders\QuadVert.glsl" />
+    <None Include="..\shaders\VolPathTraceFrag.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

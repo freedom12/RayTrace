@@ -34,7 +34,8 @@ public:
 			return std::make_unique<Ray>(position, lowLeftCorner + x * horizontal + y * vertical - position);
 		const auto rd = radius * Random::getUnitCircle();
 		const auto offset = rd.x * u + rd.y * v;
-		return std::make_unique<Ray>(position + offset, lowLeftCorner + x * horizontal + y * vertical - position - offset);
+		return std::make_unique<Ray>(position + offset,
+		                             lowLeftCorner + x * horizontal + y * vertical - position - offset);
 	}
 
 	glm::vec3 position{};

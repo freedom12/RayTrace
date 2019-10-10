@@ -29,13 +29,13 @@ private:
 	int depthCount = 5;
 	int sampleCount = 1;
 
-	GLuint texture;
+	GLuint texture{};
 	std::unique_ptr<Program> program;
 	std::unique_ptr<RenderQuad> target;
 	std::unique_ptr<ShapeList> scene;
 	std::unique_ptr<glm::vec3[]> colors;
 	std::unique_ptr<Camera> camera;
-	
+
 	void calculateColors() const;
 	[[nodiscard]] glm::vec3 getColor(const Ray &ray, int depth) const;
 };

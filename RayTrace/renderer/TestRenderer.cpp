@@ -10,9 +10,9 @@ TestRenderer::TestRenderer(const int w, const int h) : width(w), height(h)
 	sampleCount = 5;
 	auto from = glm::vec3(0, 0, -10);
 	auto to = glm::vec3(0, 0, -1);
-	camera = std::make_unique<Camera>(from, to, glm::vec3(0, 1, 0), 20, width/height, 0.1, glm::distance(from, to));
-	
-	
+	camera = std::make_unique<Camera>(from, to, glm::vec3(0, 1, 0), 20, width / height, 0.1, distance(from, to));
+
+
 	auto shaders = std::vector<std::unique_ptr<Shader>>();
 	shaders.push_back(std::make_unique<Shader>("../shaders/QuadVert.glsl", GL_VERTEX_SHADER));
 	shaders.push_back(std::make_unique<Shader>("../shaders/TestFrag.glsl", GL_FRAGMENT_SHADER));
@@ -82,7 +82,7 @@ void TestRenderer::calculateColors() const
 	auto horizontal = glm::vec3(4, 0, 0);
 	auto vertical = glm::vec3(0, 2, 0);
 	auto original = glm::vec3(0, 0, 0);
-	
+
 	for (auto j = height - 1; j >= 0; j--)
 	{
 		for (auto i = 0; i < width; i++)

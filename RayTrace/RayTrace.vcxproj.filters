@@ -242,5 +242,8 @@
     <None Include="..\shaders\RayTraceFrag.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include="..\shaders\VolPathTraceFrag.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

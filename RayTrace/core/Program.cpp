@@ -4,14 +4,14 @@ Program::Program(const std::vector<std::unique_ptr<Shader>> &shaders)
 {
 	id = glCreateProgram();
 
-	for (const auto& shader : shaders)
+	for (const auto &shader : shaders)
 	{
 		glAttachShader(id, shader->getId());
 	}
 
 	glLinkProgram(id);
 
-	for (const auto& shader : shaders)
+	for (const auto &shader : shaders)
 	{
 		glDetachShader(id, shader->getId());
 	}
@@ -33,7 +33,6 @@ Program::Program(const std::vector<std::unique_ptr<Shader>> &shaders)
 
 		std::cout << msg << std::endl;
 	}
-	
 }
 
 Program::~Program()

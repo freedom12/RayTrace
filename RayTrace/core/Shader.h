@@ -7,8 +7,7 @@ class Shader
 private:
 	GLuint id = 0;
 public:
-	Shader(const std::string& filePath, GLenum shaderType);
+	Shader(const std::string &filePath, GLenum shaderType);
 	~Shader();
 	[[nodiscard]] GLuint getId() const;
 };
-

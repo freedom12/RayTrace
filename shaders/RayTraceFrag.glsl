@@ -215,10 +215,10 @@ float D_GTR2( float roughness, float NoH )
     float a2 = a * a;
 	float cos2th = NoH * NoH;
 	float den = cos2th * (a2 - 1.0) + 1.0;
-    return a2 / (PI * den * den);     
+    return a2 / (PI * den * den);
 }
 
-float Vis_Smith( float roughness, float NoV, float NoL )
+float G_Smith( float roughness, float NoV, float NoL )
 {
     float a = roughness * roughness ;
 	float a2 = a * a;
@@ -230,23 +230,21 @@ float Vis_Smith( float roughness, float NoV, float NoL )
 	float Vis_SmithL = (NoL + sqrt(a2 + b - a2 * b));
 
 	return 1.0 / ( Vis_SmithV * Vis_SmithL ) * 4 * NoL * NoV;
-
+	
+	
 	/*
+	//UE4 ±ßÔµ½ÏºÚ
 	float k = (roughness + 1) * (roughness + 1) / 8;
 	float g1 = NoV / (NoV * (1 - k) + k);
 	float g2 = NoL / (NoL * (1 - k) + k);
-    return g1*g2 / (4 * NoV * NoL + EPS);
+    return g1*g2;
 	*/
+
 	/*
-	float alpha = roughness * roughness;
-	float alpha2 = alpha * alpha;
-	float tan2 = 1.f / (NoV * NoV) - 1.f;
-	float g1 = 2.f / (1.f + sqrt(1 + alpha2 * tan2));
-
-	tan2 = 1.f / (NoL * NoL) - 1.f;
-	float g2 = 2.f / (1.f + sqrt(1 + alpha2 * tan2));
-
-	return g1 * g2;
+	float a = roughness * roughness;
+    float Vis_SmithV = NoL * ( NoV * ( 1 - a ) + a );
+    float Vis_SmithL = NoV * ( NoL * ( 1 - a ) + a );
+    return 0.5 / (Vis_SmithV + Vis_SmithL) * 4 * NoL * NoV;
 	*/
 }
 
@@ -315,7 +313,7 @@ vec3 MetalF(Ray ray, Intersection isect, vec3 dir, inout float pdf)
 
 	vec3 F = mix(sColor, vec3(1.0), sK);
 	float D = D_GTR2(isect.mat.roughness, NoH);
-	float G = Vis_Smith(isect.mat.roughness, NoL, NoV);
+	float G = G_Smith(isect.mat.roughness, NoL, NoV);
 
 	float dPDF = NoL / PI;
 	float sPDF = D * NoH / (4.0 * VoH);
@@ -414,7 +412,7 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 		float VoH = dot(V, H);
 
 		float D = D_GTR2(isect.mat.roughness, abs(NoH));
-		float G = Vis_Smith(isect.mat.roughness, (NoL), (NoV));
+		float G = G_Smith(isect.mat.roughness, (NoL), (NoV));
 
 		float sqrtDenom = VoH + ior * LoH;
 		float dwh_dwi = abs((ior * ior * LoH) / (sqrtDenom * sqrtDenom));
@@ -434,7 +432,7 @@ vec3 GlassF(Ray ray, Intersection isect, vec3 dir, inout float pdf, int type)
 
 
 		float D = D_GTR2(isect.mat.roughness, NoH);
-		float G = Vis_Smith(isect.mat.roughness, NoL, NoV);
+		float G = G_Smith(isect.mat.roughness, NoL, NoV);
 		
 		float dwh_dwi = 1.0 / (4.0 * VoH);
 		pdf = D * abs(NoH) * dwh_dwi * F;

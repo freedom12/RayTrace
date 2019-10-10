@@ -3,7 +3,8 @@
 #include <sstream>
 
 #include "Shader.h"
-Shader::Shader(const std::string& filePath, GLenum shaderType)
+
+Shader::Shader(const std::string &filePath, GLenum shaderType)
 {
 	std::ifstream f;
 	f.open(filePath.c_str(), std::ios::in | std::ios::binary);
@@ -16,10 +17,10 @@ Shader::Shader(const std::string& filePath, GLenum shaderType)
 	std::stringstream buffer;
 	buffer << f.rdbuf();
 	auto source = buffer.str();
-	const auto* src = static_cast<const GLchar*>(source.c_str());
+	const auto *src = static_cast<const GLchar*>(source.c_str());
 
 	id = glCreateShader(shaderType);
-	
+
 	glShaderSource(id, 1, &src, nullptr);
 	glCompileShader(id);
 
@@ -41,7 +42,6 @@ Shader::Shader(const std::string& filePath, GLenum shaderType)
 		std::cout << msg << std::endl;
 		throw std::runtime_error(msg);
 	}
-	
 }
 
 Shader::~Shader()

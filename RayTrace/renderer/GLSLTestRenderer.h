@@ -29,15 +29,16 @@ private:
 
 	int maxSampleCount = 99999;
 	int curSampleCount = 0;
-	
+
 	GLuint rayTraceFBO{}, accumFBO{}, outputFBO{};
 	GLuint rayTraceTexture{}, accumTexture{}, outputTexture{}, bloomTexture{};
 	std::unique_ptr<Program> rayTraceProgram, accumProgram, outputProgram, postProgram;
-	
+
 	std::unique_ptr<RenderQuad> target;
 	std::unique_ptr<ShapeList> scene;
 	std::unique_ptr<glm::vec3[]> colors;
 	std::unique_ptr<Camera> camera;
 
-	[[nodiscard]] std::unique_ptr<Program> createProgram(const std::string& vertFilePath, const std::string& fragFilePath) const;
+	[[nodiscard]] std::unique_ptr<Program> createProgram(const std::string &vertFilePath,
+	                                                     const std::string &fragFilePath) const;
 };
